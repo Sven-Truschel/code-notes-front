@@ -12,7 +12,7 @@
 
 <script>
 /* eslint-disable */
-import axios from 'axios';
+
 export default {
 
     name: 'Signup',
@@ -31,7 +31,7 @@ export default {
                email: this.email,
                password: this.password
             }
-           axios.post('http://localhost:3000/users/signup', newUser).then(res =>{
+           this.$http.post('/signup', newUser).then(res =>{
                this.message = 'Succesfully created user'
                this.message = res.data.message
                this.$router.push('/login');

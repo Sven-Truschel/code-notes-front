@@ -11,7 +11,7 @@
 
 <script>
 /* eslint-disable */
-import axios from 'axios'
+
 export default {
 name: 'Login',
     data() {
@@ -27,7 +27,7 @@ name: 'Login',
                 email: this.email,
                 password: this.password
             }
-            axios.post('http://localhost:3000/users/login', user).then(res => {
+            this.$http.post('/users/login', user).then(res => {
                 if(res.status == 200){
                     localStorage.setItem('token', res.data.token)
                     localStorage.setItem('user', res.data.username)

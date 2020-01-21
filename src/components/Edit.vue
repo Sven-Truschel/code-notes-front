@@ -1,60 +1,29 @@
 <template>
     <div>
-        <b-container>
-<b-row>
-    <b-col>
-        <div class='form wrapper'>
-       Title: <b-form-input v-model="title" ></b-form-input>
-        Tag: <b-form-input type="text" v-model="langtag" ></b-form-input>
-        {{message}}
-         <trumbowyg v-model="content" :config="config" class="form-control" name="content"></trumbowyg>
-        <b-button @click="edit">Create</b-button>
-         </div>
-    </b-col>
-</b-row>
-        </b-container>
+        <q-input filled v-model="title" clearable label="Title" :dense="dense" style="margin-bottom: 15px;" />
+        <q-input filled v-model="langtag" clearable label="Tag" :dense="dense" />
+<q-separator  style="margin-bottom: 15px; margin-top: 15px;"/>
+<q-editor v-model="content" min-height="10rem" />
+
+
+
+
+<q-btn style="margin-top: 15px; margin-right: 5px;" icon="cancel" color="red" label="Cancel" to='/' />
+<q-btn style="margin-top: 15px;" icon="send" color="primary" label="Edit Note" @click="edit"/>
+
+
     </div>
-
-
-
 </template>
 
 
 <script>
 /* eslint-disable */
-import axios from 'axios';
-import Trumbowyg from 'vue-trumbowyg';
-import 'trumbowyg/dist/ui/trumbowyg.css';
-import preformatted from 'trumbowyg/dist/plugins/preformatted/trumbowyg.preformatted.min.js'
-
 export default {
 
     name: 'Edit',
     data() {
         return {
           content: null,
-          config: {
-              autogrow: true,
-              btns: [
-                'viewHTML',
-                'preformatted',
-                'undo',
-                'redo',
-                'strong',
-                'em',
-                'link',
-                'formatting',
-                'strong',
-                'fullscreen',
-                'orderedList',
-                'unorderedList',
-                'justifyLeft',
-                'justifyCenter',
-                'justifyRight',
-                'justifyFull'
-                ],
-
-          },
           title: '',
           notecontent: '',
           message: '',
@@ -62,16 +31,13 @@ export default {
           id: this.$route.params.id
         }
     },
-    components:{
-        Trumbowyg
-    },
     created(){
       if  (localStorage.getItem('token') === null){
           this.$router.push('/login')
       }
     },
         mounted(){
-        axios.get('http://localhost:3000/notes/'+this.id,{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
+        this.$http.get('/notes/'+this.id,{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
             this.title = res.data.title
             this.langtag = res.data.langtag
             this.content = res.data.content
@@ -92,7 +58,7 @@ export default {
             if (editNote.langtag === ''){
                 editNote.langtag = undefined
             }
-           axios.patch('http://localhost:3000/notes/'+this.id, editNote, {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res =>{
+           this.$http.patch('/notes/'+this.id, editNote, {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res =>{
                this.message = res.data.message
                this.$router.push('/');
            }

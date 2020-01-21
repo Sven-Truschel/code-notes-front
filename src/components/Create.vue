@@ -1,68 +1,40 @@
 <template>
     <div>
-        <b-container>
-<b-row>
-    <b-col>
-        <div class='form wrapper'>
-       Title: <b-form-input v-model="title" ></b-form-input>
-        Tag: <b-form-input type="text" v-model="langtag" ></b-form-input>
-        {{message}}
-         <trumbowyg v-model="content" :config="config" class="form-control" name="content"></trumbowyg>
-        <b-button @click="create">Create</b-button>
-         </div>
-    </b-col>
-</b-row>
-        </b-container>
+        <q-input filled v-model="title" clearable label="Title" :dense="dense" style="margin-bottom: 15px;" />
+        <q-input filled v-model="langtag" clearable label="Tag" :dense="dense" />
+<q-separator  style="margin-bottom: 15px; margin-top: 15px;"/>
+
+<q-editor v-model="content" min-height="10rem"
+:toolbar="[
+  ['bold', 'italic', 'strike', 'underline', 'code'],
+  ['token', 'hr', 'link'],
+  ['fullscreen']
+]" />
+
+
+
+<q-btn style="margin-top: 15px; margin-right: 5px;" icon="cancel" color="red" label="Cancel" to='/' />
+<q-btn style="margin-top: 15px;" icon="send" color="primary" label="Add Note" @click="create"/>
+
+
     </div>
-
-
-
 </template>
 
 
 <script>
 /* eslint-disable */
-import axios from 'axios';
-import Trumbowyg from 'vue-trumbowyg';
-import 'trumbowyg/dist/ui/trumbowyg.css';
-import preformatted from 'trumbowyg/dist/plugins/preformatted/trumbowyg.preformatted.min.js'
-
 export default {
 
     name: 'Create',
     data() {
         return {
-          content: null,
-          config: {
-              autogrow: true,
-              btns: [
-                'viewHTML',
-                'preformatted',
-                'undo',
-                'redo',
-                'strong',
-                'em',
-                'link',
-                'formatting',
-                'strong',
-                'fullscreen',
-                'orderedList',
-                'unorderedList',
-                'justifyLeft',
-                'justifyCenter',
-                'justifyRight',
-                'justifyFull'
-                ],
-
-          },
+          content: '',
           title: '',
           notecontent: '',
           message: '',
-          langtag: ''
+          langtag: '',
+          dense: ''
         }
-    },
-    components:{
-        Trumbowyg
     },
     created(){
       if  (localStorage.getItem('token') === null){
@@ -81,7 +53,7 @@ export default {
                 newNote.langtag = undefined
             }
             console.log(newNote);
-           axios.post('http://localhost:3000/notes', newNote, {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res =>{
+           this.$http.post('/notes', newNote, {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res =>{
                this.message = res.data.message
                this.$router.push('/');
            }
@@ -90,7 +62,12 @@ export default {
                console.log(err)
                this.message = err
            })
-        }
+        },
+        // codeBlock(){
+        //     console.log(this.$children[3].value)
+
+        //     this.$children[3].value = '<pre><code>' + this.$children[3].value + '</code></pre>'
+        // }
 
     }
 }

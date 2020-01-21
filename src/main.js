@@ -6,21 +6,18 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Edit from './components/Edit'
 import Create from './components/Create'
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret, faTrashAlt, faPen } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import VuePrism from 'vue-prism'
+import './registerServiceWorker'
 
-library.add(faPen)
-library.add(faTrashAlt)
-library.add(faUserSecret)
+import axios from 'axios'
+import './quasar'
+var instance = axios.create({
+    baseURL: 'http://192.168.178.10:3000'
+})
+Vue.prototype.$http = instance
 
-
-Vue.component('font-awesome-icon', FontAwesomeIcon)
-
-Vue.use(BootstrapVue);
+Vue.use(VuePrism)
+import 'prismjs/themes/prism.css'
 Vue.use(VueRouter);
 const routes = [
     { path: '/', component: Landing },
