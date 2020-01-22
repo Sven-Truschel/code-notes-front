@@ -64,8 +64,9 @@ export default {
            }
            )
            .catch(err => {
-               console.log(err)
-               this.message = err
+               if (this.message == 'Error: Request failed with status code 401') {
+                   this.$router.push('/login')
+               }
            })
         }
 

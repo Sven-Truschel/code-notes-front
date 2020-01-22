@@ -75,7 +75,8 @@ export default {
             console.log(res);
           })
 
-        }
+        },
+
     },
     mounted(){
         this.$http.get('/users/'+localStorage.getItem('UID'),{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {

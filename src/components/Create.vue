@@ -16,7 +16,7 @@
 <q-btn style="margin-top: 15px; margin-right: 5px;" icon="cancel" color="red" label="Cancel" to='/' />
 <q-btn style="margin-top: 15px;" icon="send" color="primary" label="Add Note" @click="create"/>
 
-
+{{message}}
     </div>
 </template>
 
@@ -59,15 +59,12 @@ export default {
            }
            )
            .catch(err => {
-               console.log(err)
                this.message = err
+               if (this.message == 'Error: Request failed with status code 401') {
+                   this.$router.push('/login')
+               }
            })
         },
-        // codeBlock(){
-        //     console.log(this.$children[3].value)
-
-        //     this.$children[3].value = '<pre><code>' + this.$children[3].value + '</code></pre>'
-        // }
 
     }
 }

@@ -1,4 +1,5 @@
 import Vue from 'vue';
+
 import App from './App';
 import VueRouter from 'vue-router'
 import Landing from './components/Landing'
@@ -12,7 +13,7 @@ import './registerServiceWorker'
 import axios from 'axios'
 import './quasar'
 var instance = axios.create({
-    baseURL: 'http://192.168.178.10:3000'
+    baseURL: 'http://192.168.43.68:3000'
 })
 Vue.prototype.$http = instance
 
@@ -32,6 +33,8 @@ const router = new VueRouter({
     routes
 
 })
+/* eslint-disable */
+
 new Vue({
     el: '#app',
     router,

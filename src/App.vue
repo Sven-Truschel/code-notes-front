@@ -78,7 +78,7 @@ export default {
       toggleDark: false
     }
   },
-  mounted(){
+  updated(){
     /* eslint-disable */
 
             this.$http.get('/users/tags/'+localStorage.getItem('UID'),{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
