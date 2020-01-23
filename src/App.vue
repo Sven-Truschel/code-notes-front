@@ -24,35 +24,48 @@
     New Note
   </q-item-section>
 </q-item>
-<q-item-section>
-  Categories
-</q-item-section>
+<q-expansion-item
+        expand-separator
+        icon="filter_list"
+        label="Categories"
 
-<q-list dense bordered separator>
+      >
+        <q-card clickable v-ripple v-bind:class="{active: filter === 'all' }" @click="filter = 'all'" >
+          <q-card-section>
+All
+          </q-card-section>
+                  <q-separator />
 
-<q-item clickable v-ripple v-bind:class="{active: filter === 'all' }" @click="filter = 'all'">
-  All
-</q-item>
+        </q-card>
 
-<q-item clickable v-ripple v-for="(tag, index) in tags" v-bind:key='index' v-bind:class="{active: filter === tag.langtag }" @click="filter = tag.langtag">
-  {{tag.langtag}}
-</q-item>
+                <q-card  clickable v-ripple v-for="(tag, index) in tags" v-bind:key='index' v-bind="tags" v-bind:class="{active: filter === tag.langtag }" @click="filter = tag.langtag">
+          <q-card-section>
+{{tag.langtag}}
+          </q-card-section>
+        <q-separator />
+        </q-card>
 
-</q-list>
+      </q-expansion-item>
 
-<q-item-section>
-  Settings
-</q-item-section>
-<q-list>
-  <q-item>
+
+      <q-expansion-item
+        expand-separator
+        icon="perm_identity"
+        label="Settings"
+      >
+        <q-card>
+          <q-card-section>
 <q-toggle label="Dark mode" v-model="toggleDark"  />
 
-  </q-item>
-</q-list>
+          </q-card-section>
+        </q-card>
+      </q-expansion-item>
+
+
     </q-drawer>
 
     <q-page-container>
-        <q-container>
+        <q-container name="main">
       <q-page padding>
       <router-view />
           </q-page>
@@ -78,13 +91,13 @@ export default {
       toggleDark: false
     }
   },
-  updated(){
+ mounted(){
     /* eslint-disable */
-
             this.$http.get('/users/tags/'+localStorage.getItem('UID'),{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
-            this.tags = res.data
+              this.tags = res.data
         })
   },
+
   methods: {},
   watch: {
     toggleDark: function(toggleDark){
@@ -94,7 +107,19 @@ export default {
         this.$q.dark.set(false)
       }
     },
+    $route: function(){
+            this.$http.get('/users/tags/'+localStorage.getItem('UID'),{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
+              this.tags = res.data
+        })
+    }
   }
   }
 
 </script>
+<style>
+.my-card{
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+}
+</style>

@@ -1,10 +1,15 @@
 
 <template>
     <div>
-        E-mail: <input type="text" v-model="email" />
-        Password: <input type="password" v-model="password" />
+       <q-input filled v-model="email" clearable label="Email" :dense="dense" style="margin: 0px auto 15px auto; max-width: 300px;" />
+       <q-input filled v-model="name" clearable label="Username" :dense="dense" style="margin: 0px auto 15px auto; max-width: 300px;" />
+       <q-input filled v-model="password" clearable label="Password" type="password" :dense="dense" style="margin: 0px auto 15px auto; max-width: 300px;" />
+
+
         <br />
-        <button @click="signup">Signup</button>
+
+        <q-btn icon="send" style="margin: 0px auto 0px auto; display: block; width: 300px" color="primary" label="Sign up" @click="signup"/>
+
         <br />
         {{message}}
     </div>

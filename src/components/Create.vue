@@ -4,12 +4,8 @@
         <q-input filled v-model="langtag" clearable label="Tag" :dense="dense" />
 <q-separator  style="margin-bottom: 15px; margin-top: 15px;"/>
 
-<q-editor v-model="content" min-height="10rem"
-:toolbar="[
-  ['bold', 'italic', 'strike', 'underline', 'code'],
-  ['token', 'hr', 'link'],
-  ['fullscreen']
-]" />
+
+<ckeditor :editor="editor" v-model="content" :config="editorConfig"></ckeditor>
 
 
 
@@ -23,6 +19,16 @@
 
 <script>
 /* eslint-disable */
+    import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+
+    import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
+    import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
+    import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
+    import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
+    import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
+    import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+
+
 export default {
 
     name: 'Create',
@@ -33,7 +39,29 @@ export default {
           notecontent: '',
           message: '',
           langtag: '',
-          dense: ''
+          dense: '',
+          editorConfig: {
+              plugins: [
+                  EssentialsPlugin,
+                  BoldPlugin,
+                  ItalicPlugin,
+                  LinkPlugin,
+                  ParagraphPlugin,
+                  CodeBlock
+              ],
+              toolbar: {
+                  items: [
+                      'bold',
+                      'italic',
+                      'link',
+                      'undo',
+                      'redo',
+                      'codeBlock'
+                  ]
+              }
+
+          },
+          editor: ClassicEditor
         }
     },
     created(){

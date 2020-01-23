@@ -1,11 +1,15 @@
 <template>
     <div>
-      Email: <input type="text" v-model="email">
-        Password: <input type="password" v-model="password">
-        <br/>
-        <button @click="login">login</button>
+<div class="wrapper">
+       <q-input filled v-model="email" clearable label="Email" :dense="dense" style="margin-top: 15px; max-width: 300px;" />
+       <q-input filled v-model="password" clearable label="Password" type="password" :dense="dense" style="margin-top: 15px; max-width: 300px;" />
+<a href="/signup" style="font-size: 13px;">Don't have an account yet? Click here to sign up!</a>
+
+        <q-btn icon="send" style="display: block; width: 300px; margin-top: 15px;" color="primary" label="Login" @click="login"/>
+
         <br>
-        {{message}}
+       <p v-if="message"> {{message}}</p>
+       </div>
     </div>
 </template>
 
@@ -45,5 +49,10 @@ name: 'Login',
 <style>
 input{
     display: block;
+}
+.wrapper{
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 300px;
 }
 </style>

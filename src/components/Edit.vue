@@ -3,21 +3,30 @@
         <q-input filled v-model="title" clearable label="Title" :dense="dense" style="margin-bottom: 15px;" />
         <q-input filled v-model="langtag" clearable label="Tag" :dense="dense" />
 <q-separator  style="margin-bottom: 15px; margin-top: 15px;"/>
-<q-editor v-model="content" min-height="10rem" />
 
 
+<ckeditor :editor="editor" v-model="content" :config="editorConfig"></ckeditor>
 
 
 <q-btn style="margin-top: 15px; margin-right: 5px;" icon="cancel" color="red" label="Cancel" to='/' />
 <q-btn style="margin-top: 15px;" icon="send" color="primary" label="Edit Note" @click="edit"/>
 
-
+{{message}}
     </div>
 </template>
 
 
 <script>
 /* eslint-disable */
+    import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
+
+    import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
+    import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
+    import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
+    import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
+    import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
+    import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+
 export default {
 
     name: 'Edit',
@@ -28,7 +37,30 @@ export default {
           notecontent: '',
           message: '',
           langtag: '',
-          id: this.$route.params.id
+          id: this.$route.params.id,
+          dense: '',
+          editorConfig: {
+              plugins: [
+                  EssentialsPlugin,
+                  BoldPlugin,
+                  ItalicPlugin,
+                  LinkPlugin,
+                  ParagraphPlugin,
+                  CodeBlock
+              ],
+              toolbar: {
+                  items: [
+                      'bold',
+                      'italic',
+                      'link',
+                      'undo',
+                      'redo',
+                      'codeBlock'
+                  ]
+              }
+
+          },
+          editor: ClassicEditor
         }
     },
     created(){
