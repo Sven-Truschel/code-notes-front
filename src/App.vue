@@ -58,7 +58,14 @@ All
 <q-toggle label="Dark mode" v-model="toggleDark"  />
 
           </q-card-section>
+
+                  <q-card-section>
+
+<q-btn unelevated round color="black" icon="exit_to_app" @click="logout"/>
+                  </q-card-section>
         </q-card>
+
+
       </q-expansion-item>
 
 
@@ -80,7 +87,8 @@ All
 
 
 <script>
-
+ /* eslint-disable */
+import AuthService from '@/services/AuthService.js';
 export default {
     name: 'App',
     data () {
@@ -92,13 +100,18 @@ export default {
     }
   },
  mounted(){
-    /* eslint-disable */
-            this.$http.get('/users/tags/'+localStorage.getItem('UID'),{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
+
+            this.$http.get('/users/tags/'+this.$store.state.user.user,{headers: {Authorization: 'Bearer ' + this.$store.state.user}}).then(res => {
               this.tags = res.data
         })
   },
 
-  methods: {},
+  methods: {
+     logout() {
+      this.$store.dispatch('logout');
+      this.$router.push('/login');
+    },
+  },
   watch: {
     toggleDark: function(toggleDark){
       if (this.toggleDark == true) {
@@ -108,7 +121,7 @@ export default {
       }
     },
     $route: function(){
-            this.$http.get('/users/tags/'+localStorage.getItem('UID'),{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
+            this.$http.get('/users/tags/'+this.$store.state.user.user,{headers: {Authorization: 'Bearer ' + this.$store.state.user}}).then(res => {
               this.tags = res.data
         })
     }

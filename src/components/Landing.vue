@@ -4,7 +4,7 @@
 
 
 
-
+<p class='emptymessage' v-if="notes == 0">You don't have any notes yet, Click <a href="/create">here</a> to create one! </p>
 
     <q-card class="my-card" style="margin-bottom: 20px;" v-for="(note, index) in notesFiltered" v-bind:key="note._id">
       <q-card-section>
@@ -19,7 +19,7 @@
       <q-card-actions align="right">
         <q-btn flat round color="primary" icon="delete" @click="deleteNote(index)" />
         <q-btn flat round color="primary" icon="edit" :to="{ name: 'Edit', params: { id: note._id } }"/> <!-- todo -->
-        <q-btn flat round color="primary" icon="share" /> <!-- todo -->
+        <!-- <q-btn flat round color="primary" icon="share" /> todo -->
       </q-card-actions>
     </q-card>
 
@@ -36,6 +36,8 @@
 
 import 'prismjs/themes/prism.css'
 import 'prismjs'
+import AuthService from '@/services/AuthService.js';
+
 export default {
     name: 'Landing',
     data() {
@@ -44,12 +46,18 @@ export default {
             email: '',
             notes:[{}],
             tags:[{}],
+            username: ''
         }
     },
-    created(){
-      if  (localStorage.getItem('token') === null){
-          this.$router.push('/login')
-      }
+   async created(){
+      // if  (localStorage.getItem('token') === null){
+      //     this.$router.push('/login')
+      // }
+          if (!this.$store.getters.isLoggedIn) {
+      this.$router.push('/login');
+    }
+
+
 
     },
     computed: {
@@ -62,16 +70,14 @@ export default {
       },
     },
     methods: {
-        logout() {
-            localStorage.clear()
-            this.$router.push('/login')
-        },
+
+
         deleteNote(index){
           // console.log(index)
           let noteId = this.notes[index]._id
           // console.log(this.notes[index]._id)
           this.notes.splice(index, 1)
-          this.$http.delete('/notes/'+noteId, {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}} ).then(res => {
+          this.$http.delete('/notes/'+noteId, {headers: {Authorization: 'Bearer ' + this.$store.state.token}} ).then(res => {
             console.log(res);
           })
 
@@ -79,13 +85,16 @@ export default {
 
     },
     mounted(){
-        this.$http.get('/users/'+localStorage.getItem('UID'),{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
-            // console.log(res)
+        this.$http.get('/users/'+this.$store.state.user.user,{headers: {Authorization: 'Bearer ' + this.$store.state.token}}).then(res => {
+console.log(res.data)
             this.notes = res.data.notes
         })
 
-        this.name = localStorage.getItem('user')
     }
 
 }
 </script>
+
+<style>
+
+</style>

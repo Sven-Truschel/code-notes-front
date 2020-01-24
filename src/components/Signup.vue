@@ -8,7 +8,7 @@
 
         <br />
 
-        <q-btn icon="send" style="margin: 0px auto 0px auto; display: block; width: 300px" color="primary" label="Sign up" @click="signup"/>
+        <q-btn icon="send" style="margin: 0px auto 0px auto; display: block; width: 300px" color="primary" label="Sign up" @click="signUp"/>
 
         <br />
         {{message}}
@@ -17,7 +17,7 @@
 
 <script>
 /* eslint-disable */
-
+import AuthService from '@/services/AuthService.js'
 export default {
 
     name: 'Signup',
@@ -31,12 +31,14 @@ export default {
         }
     },
     methods: {
-        signup() {
+        signupold() {
             const newUser = {
                email: this.email,
+               username: this.name,
                password: this.password
             }
-           this.$http.post('/signup', newUser).then(res =>{
+
+           this.$http.post('users/signup', newUser).then(res =>{
                this.message = 'Succesfully created user'
                this.message = res.data.message
                this.$router.push('/login');
@@ -46,6 +48,19 @@ export default {
                console.log(err)
                this.message = err
            })
+        },
+        async signUp() {
+            try {
+                const credentials = {
+                    email: this.email,
+                    username: this.name,
+                    password: this.password,
+                };
+                const response = await AuthService.signUp(credentials);
+                this.message = response.message;
+            }catch (error) {
+                this.message = error.response.data.message
+            }
         }
 
     }

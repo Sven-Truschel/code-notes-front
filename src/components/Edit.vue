@@ -63,13 +63,13 @@ export default {
           editor: ClassicEditor
         }
     },
-    created(){
-      if  (localStorage.getItem('token') === null){
-          this.$router.push('/login')
-      }
+    async created(){
+          if (!this.$store.getters.isLoggedIn) {
+      this.$router.push('/login');
+    }
     },
         mounted(){
-        this.$http.get('/notes/'+this.id,{headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res => {
+        this.$http.get('/notes/'+this.id,{headers: {Authorization: 'Bearer ' + this.$store.state.token}}).then(res => {
             this.title = res.data.title
             this.langtag = res.data.langtag
             this.content = res.data.content
@@ -90,7 +90,7 @@ export default {
             if (editNote.langtag === ''){
                 editNote.langtag = undefined
             }
-           this.$http.patch('/notes/'+this.id, editNote, {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res =>{
+           this.$http.patch('/notes/'+this.id, editNote, {headers: {Authorization: 'Bearer ' + this.$store.state.token}}).then(res =>{
                this.message = res.data.message
                this.$router.push('/');
            }

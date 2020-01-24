@@ -15,6 +15,7 @@
 
 <script>
 /* eslint-disable */
+import AuthService from '@/services/AuthService.js'
 
 export default {
 name: 'Login',
@@ -26,7 +27,7 @@ name: 'Login',
         }
     },
     methods: {
-        login() {
+        loginold() {
             let user = {
                 email: this.email,
                 password: this.password
@@ -42,6 +43,24 @@ name: 'Login',
                 console.log(res)
                 this.message = res.data.message
             })
+        },
+        async login() {
+            try{
+                const credentials = {
+                    email: this.email,
+                    password: this.password
+                };
+                const response = await AuthService.login(credentials);
+                this.message = response.message
+                const token = response.token
+
+                const user = {user: response.userId, email: response.email}
+
+                this.$store.dispatch('login', {token, user});
+                this.$router.push('/');
+            } catch(error){
+                this.message = error.message
+            }
         }
     }
 }

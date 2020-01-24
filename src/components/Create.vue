@@ -20,7 +20,7 @@
 <script>
 /* eslint-disable */
     import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor';
-
+import AuthService from '@/services/AuthService.js';
     import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock';
     import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
     import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -64,24 +64,24 @@ export default {
           editor: ClassicEditor
         }
     },
-    created(){
-      if  (localStorage.getItem('token') === null){
-          this.$router.push('/login')
-      }
+    async created(){
+          if (!this.$store.getters.isLoggedIn) {
+      this.$router.push('/login');
+    }
     },
     methods: {
         create() {
             const newNote = {
                title: this.title,
                content: this.content,
-               email: localStorage.getItem('email'),
+                email: this.$store.state.user.email,
                langtag: this.langtag
             }
             if (newNote.langtag === ''){
                 newNote.langtag = undefined
             }
             console.log(newNote);
-           this.$http.post('/notes', newNote, {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}}).then(res =>{
+           this.$http.post('/notes', newNote, {headers: {Authorization: 'Bearer ' + this.$store.state.token}}).then(res =>{
                this.message = res.data.message
                this.$router.push('/');
            }
