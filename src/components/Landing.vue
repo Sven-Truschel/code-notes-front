@@ -43,7 +43,6 @@ export default {
     data() {
         return {
             name: '',
-            email: '',
             notes:[{}],
             tags:[{}],
             username: ''

@@ -1,7 +1,6 @@
 
 <template>
     <div>
-       <q-input filled v-model="email" clearable label="Email" :dense="dense" style="margin: 0px auto 15px auto; max-width: 300px;" />
        <q-input filled v-model="name" clearable label="Username" :dense="dense" style="margin: 0px auto 15px auto; max-width: 300px;" />
        <q-input filled v-model="password" clearable label="Password" type="password" :dense="dense" style="margin: 0px auto 15px auto; max-width: 300px;" />
 
@@ -24,7 +23,6 @@ export default {
     data() {
         return {
             name: '',
-            email: '',
             password: '',
             message: ''
 
@@ -33,7 +31,6 @@ export default {
     methods: {
         signupold() {
             const newUser = {
-               email: this.email,
                username: this.name,
                password: this.password
             }
@@ -52,12 +49,12 @@ export default {
         async signUp() {
             try {
                 const credentials = {
-                    email: this.email,
                     username: this.name,
                     password: this.password,
                 };
                 const response = await AuthService.signUp(credentials);
                 this.message = response.message;
+                this.$router.push('/login');
             }catch (error) {
                 this.message = error.response.data.message
             }

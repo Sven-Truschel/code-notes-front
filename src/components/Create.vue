@@ -74,7 +74,7 @@ export default {
             const newNote = {
                title: this.title,
                content: this.content,
-                email: this.$store.state.user.email,
+                username: this.$store.state.user.username,
                langtag: this.langtag
             }
             if (newNote.langtag === ''){
