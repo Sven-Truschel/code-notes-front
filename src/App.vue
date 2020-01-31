@@ -135,4 +135,8 @@ export default {
   margin-right: auto;
   margin-left: auto;
 }
+
+.body--dark{
+  color: white;
+}
 </style>
