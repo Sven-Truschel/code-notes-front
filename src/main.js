@@ -15,7 +15,7 @@ import store from './store'
 import axios from 'axios'
 import './quasar'
 var instance = axios.create({
-    baseURL: 'http://192.168.178.10:3000'
+    baseURL: 'http://64.227.59.229:5000'
 })
 Vue.prototype.$http = instance
 axios.defaults.headers.common['Authorization'] = `Bearer ${store.state.token}`;
