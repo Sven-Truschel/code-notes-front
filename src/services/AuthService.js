@@ -1,5 +1,5 @@
 import axios from 'axios'
-const url = 'http://64.227.59.229:5000/users';
+const url = 'https://64.227.59.229:5000/users';
 export default {
     login(credentials) {
         return axios
