@@ -27,7 +27,7 @@
         "axios": "^0.19.0",
         "core-js": "^3.4.3",
         "file-loader": "^5.0.2",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "jsonwebtoken": "^8.5.1",
         "postcss-loader": "^3.0.0",
         "quasar": "^1.0.0",
